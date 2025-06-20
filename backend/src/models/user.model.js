@@ -8,10 +8,10 @@ const userSchema = new Schema(
       trim: true,
     },
     email: {
-        type: String,
-        required: [true, "Email is required"],
-        unique: true,
-        trim: true,
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      trim: true,
     },
     mobile: {
       type: String,
@@ -23,6 +23,9 @@ const userSchema = new Schema(
       required: [true, "Password is Required"],
       select: false,
       minLength: [4, "Password Must Contain At Least 4 Characters!"],
+    },
+    token: {
+      type: String,
     },
   },
   { timestamps: true }
