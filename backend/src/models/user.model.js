@@ -24,7 +24,7 @@ const userSchema = new Schema(
       select: false,
       minLength: [4, "Password Must Contain At Least 4 Characters!"],
     },
-    token: {
+    refreshToken: {
       type: String,
     },
   },

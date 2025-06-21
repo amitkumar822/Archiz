@@ -12,9 +12,9 @@ export const register = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All field is required");
   }
 
-  const userVerify = await User.find({ email }).lean();
+  const userVerify = await User.findOne({ email }).lean();
 
-  if (!userVerify) {
+  if (userVerify) {
     throw new ApiError(409, `User allredy exist with same email ${email}`);
   }
 
@@ -52,7 +52,9 @@ export const login = asyncHandler(async (req, res) => {
 
   // token generate
   const token = await createTokensAndSaveCookies(user._id, res);
-  res.json(new ApiResponse(200, { user, token }, "User Login successfully"));
+  user.refreshToken = token;
+
+  res.json(new ApiResponse(200, user, "User Login successfully"));
 });
 
 export const logOut = asyncHandler(async (req, res) => {
@@ -60,7 +62,7 @@ export const logOut = asyncHandler(async (req, res) => {
   // Remove refresh token from database
   await User.findByIdAndUpdate(
     userId,
-    { $set: { refreshToken: "", token: "" } },
+    { $set: { refreshToken: "" } },
     { new: true }
   );
 

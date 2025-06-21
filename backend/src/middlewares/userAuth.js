@@ -12,19 +12,16 @@ export const isAuthenticated = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    //^ Verify the access token
     const decodedToken = jwt.verify(
       accessToken,
       process.env.JWT_ACCESS_SECRET_KEY
     );
 
-    //* Fetch the user from the database
     const user = await User.findById(decodedToken.userId);
     if (!user) {
       throw new ApiError(404, "User Not Found");
     }
 
-    //& Attach user details to the request object
     req.user = {
       userId: user._id,
     };
@@ -37,13 +34,11 @@ export const isAuthenticated = asyncHandler(async (req, res, next) => {
       }
 
       try {
-        // Verify the refresh token
         const decodedRefreshToken = jwt.verify(
           refreshToken,
           process.env.JWT_REFRESH_SECRET_KEY
         );
 
-        // Fetch the user from the database
         const user = await User.findById(decodedRefreshToken.userId);
         if (!user) {
           throw new ApiError(404, "User Not Found");
