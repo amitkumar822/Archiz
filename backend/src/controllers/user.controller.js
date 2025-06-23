@@ -5,6 +5,12 @@ import createTokensAndSaveCookies from "../jwt/AuthToken.js";
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
 
+/**
+ * @desc User Register
+ * @rootRoute /api/v1/user
+ * @route POST /register
+ * @access public
+ */
 export const register = asyncHandler(async (req, res) => {
   const { name, email, password, mobile } = req.body;
 
@@ -30,6 +36,11 @@ export const register = asyncHandler(async (req, res) => {
   res.json(new ApiResponse(201, user, "User is successfully created"));
 });
 
+/**
+ * @desc User Login
+ * @route POST /login
+ * @access public
+ */
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -57,6 +68,11 @@ export const login = asyncHandler(async (req, res) => {
   res.json(new ApiResponse(200, user, "User Login successfully"));
 });
 
+/**
+ * @desc User Logout
+ * @route POST /logout
+ * @access Private
+ */
 export const logOut = asyncHandler(async (req, res) => {
   const { userId } = req.user;
   // Remove refresh token from database
